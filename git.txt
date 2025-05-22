@@ -1,0 +1,13 @@
+# primera vez
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/nextvega/axiosrh.git
+git push -u origin main
+
+# actualizar 
+git add .
+git commit -m "first commit"
+git branch -M main
+git push -u origin main
