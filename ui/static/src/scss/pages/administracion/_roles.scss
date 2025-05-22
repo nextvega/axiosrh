@@ -1,0 +1,91 @@
+.table__principal__datos__form{
+    gap: 2rem;
+    .table__principal__datos__content__from{
+        .table__left__information{
+            padding: 2.5rem 2rem;
+            overflow-x: scroll;
+            border-radius: 0.8rem;
+            .table__left__information__form__new{
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                .table__left__information__form__new__block{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: baseline;
+                    .table__left__information__form__new__block-label{
+                        display: inline-block;
+                        max-width: 15rem;
+                        min-width: 15rem;
+                        color: $blanco;
+                        font-size: 1.4rem;
+                    }
+                    .table__left__information__form__new__block-input{
+                        max-width: 50rem;
+                        min-width: 50rem;
+                        padding: 1.3rem 1rem;
+                        border: 1px solid $gris;
+                        background-color: $negro;
+                        color: $blanco;
+                        font-size: 1.4rem;
+                        border-radius: 0.8rem;
+                    }
+                    .table__left__information__form__new__block-textarea{
+                        resize: none;
+                        width: 80rem !important;
+                        height: 15rem;
+                        padding: 1rem 1rem;
+                        border: 1px solid $gris;
+                        background-color: $negro;
+                        color: $blanco;
+                        font-size: 1.4rem;
+                        border-radius: 0.8rem;
+                    }
+
+                    .errorlist{
+                        color: $rojo;
+                        font-size: 1.3rem;
+                        padding: 0.5rem 2rem;
+                        background-color: #ff00001f;
+                        margin: 0 2rem;
+                        border-radius: 0.8rem;
+                    }
+                }
+            }
+        }
+    }
+    .table__left__information__header__link{
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        .table__left__information__header__link-click-danger{
+            background-color: rgb(188, 0, 0) !important;
+            border: 1px solid rgb(255, 0, 0) !important;
+            i::before{
+                font-weight: 900 !important;
+            }
+        }
+    }
+}
+
+
+.table__left__information__form__new-grid{
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    .table__left__information__form__new__block{
+        .table__left__information__form__new__block-label{
+            max-width: 12rem !important;
+            min-width: 12rem !important;
+        }  
+        .table__left__information__form__new__block-input{
+            max-width: 40rem !important;
+            min-width: 40rem !important;
+        }
+        .table__left__information__form__new__block-textarea-small{
+            max-width: 40rem !important;
+            min-width: 40rem !important; 
+            height: 10rem !important;
+        }
+    }
+}

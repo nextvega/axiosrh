@@ -1,0 +1,177 @@
+{% extends 'layouts/dashboard_layout.html' %}
+{% load static %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if "create" in message.tags %}
+            <script>
+                Swal.fire({
+                    title: "Registro Creado",
+                    text: "{{message}}",
+                    icon: "success"
+                });
+            </script>
+        {% endif %}
+        {% if "update" in message.tags %}
+            <script>
+                Swal.fire({
+                    title: "Registro Actualizado",
+                    text: "{{message}}",
+                    icon: "success"
+                });
+            </script>
+        {% endif %}
+        {% if "delete" in message.tags %}
+            <script>
+                Swal.fire({
+                    title: "Registro Eliminado",
+                    text: "{{message}}",
+                    icon: "success"
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<main class="table__principal__datos">
+    <section class="table__principal__datos__content">
+        <div class="table__left__information">
+            <header class="table__left__information__header">
+                <div class="table__left__information__header__title">
+                    <h3 class="table__left__information__header__title-text">{{title}} | Listado</h3>
+                </div>
+                <div class="table__left__information__header__link">
+                    <a class="table__left__information__header__link-click" href="{% url 'nuevo_cargo' %}">+ Agregar {{title}}</a>
+                </div>
+            </header>
+
+            <div class="table__left__information__help">
+                <form method="get" class="table__left__information__help__form">
+                    <label for="search" class="table__left__information__help__form-label"><i class="bi bi-search"></i></label>
+                    <div class="table__left__information__help__form__input">
+                        <input
+                            class="table__left__information__help__form__input-text"
+                            type="search"
+                            name="buscador"
+                            id="search"
+                            placeholder="Buscar por nombre de cargo"
+                            value="{{ request.GET.q|default:'' }}"
+                        >
+                    </div>
+                </form>
+            </div>
+
+            <table class="table__left__information__table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Comentarios</th>
+                        <th>Estado</th>
+                        <th class="sortable sortable__acciones" style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cargo in cargos %}
+                        <tr>
+                            <td>{{ cargo.id }}</td>
+                            <td>{{ cargo.nombre }}</td>
+                            <td>{{ cargo.comentarios }}</td>
+                            <td class="status {% if cargo.estado == 'ACTIVO' %}discharge{% else %}transfer{% endif %}">
+                                {{ cargo.estado }}
+                            </td>
+                            <td class="table__left__information__table__acciones">
+                                <a href="{% url 'editar_cargo' cargo.id %}" class="editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="{% url 'eliminar_cargo' cargo.id %}" class="eliminar" data-id="{{ cargo.id }}">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">No hay cargos registrados.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <ul class="pagination_list">
+                    <li>
+                        {% if cargos.has_previous %}
+                            <a href="?page={{ cargos.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        {% else %}
+                            <span class="disabled"><i class="bi bi-chevron-left"></i></span>
+                        {% endif %}
+                    </li>
+                    {% if cargos.number > 1 %}
+                    <li>
+                        <a href="?page={{ cargos.number|add:"-1" }}{% if query %}&q={{ query }}{% endif %}">
+                            {{ cargos.number|add:"-1" }}
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <a href="?page={{ cargos.number }}{% if query %}&q={{ query }}{% endif %}" class="current">
+                            {{ cargos.number }}
+                        </a>
+                    </li>
+                    {% if cargos.number < cargos.paginator.num_pages %}
+                    <li>
+                        <a href="?page={{ cargos.number|add:"1" }}{% if query %}&q={{ query }}{% endif %}">
+                            {{ cargos.number|add:"1" }}
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        {% if cargos.has_next %}
+                            <a href="?page={{ cargos.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        {% else %}
+                            <span class="disabled"><i class="bi bi-chevron-right"></i></span>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.eliminar').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.getAttribute('href');
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción no se puede deshacer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

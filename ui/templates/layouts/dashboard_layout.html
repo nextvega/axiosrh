@@ -1,0 +1,795 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AxiosRH - {{title}}</title>
+    <link rel="shortcut icon" href="{% static 'build/img/logo.svg'%}" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'build/css/app.css' %}" as="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard__layout">
+    
+        <aside class="dashboard__layout__menu">
+            <main class="dashboard__layout__menu__contenido">
+                <div class="dashboard__layout__menu__contenido__titulo">
+                    <a href="{% url 'index' %}" class="dashboard__layout__menu__contenido__titulo__link">
+                        <i class="bi bi-app-indicator"></i>
+                        <h1 class="dashboard__layout__menu__contenido__titulo__link__texto">Axios<span>RH</span></h1>
+                    </a>
+                </div>
+
+                <div class="dashboard__layout__menu__contenido__modulo">
+                    <article class="dashboard__layout__menu__contenido__modulo__link">
+                        <div class="dashboard__layout__menu__contenido__modulo__link__texto">
+                            <p class="dashboard__layout__menu__contenido__modulo__link__texto-titulo">General</p>
+                        </div>
+
+                        <ul class="dashboard__layout__menu__contenido__modulo__link__items">
+                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item">
+                                {% url 'index' as index_url %}
+
+                                {% if request.path == index_url %}
+                                    <a href="{% url 'index' %}" class="dashboard__layout__menu__contenido__modulo__link__items__item__link active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-columns-gap"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Dashboard</div>
+                                        </div>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'index' %}" class="dashboard__layout__menu__contenido__modulo__link__items__item__link">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-columns-gap"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Dashboard</div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'roles' as roles_url %}
+                                {% url 'permisos_admin' as permisos_admin_url %}
+                                {% url 'asignar_permisos' as asignar_permisos_url %}
+                                {% url 'usuarios' as usuarios_url %}
+
+                                {% if request.path == usuarios_url or  request.path == permisos_admin_url or request.path == roles_url or request.path == asignar_permisos_url%}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-person"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Administracion</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'roles'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Admin Roles</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos_admin'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p> Admin Permisos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'asignar_permisos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p> Asignar Permisos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'usuarios'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Usuarios</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-person"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Administracion</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'roles'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p> Admin Roles</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos_admin'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Admin Permisos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'asignar_permisos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p> Asignar Permisos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'usuarios'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p> Usuarios</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% endif %}
+
+                            </li>
+                        </ul>
+
+                    </article>
+
+                    <article class="dashboard__layout__menu__contenido__modulo__link">
+                        <div class="dashboard__layout__menu__contenido__modulo__link__texto">
+                            <p class="dashboard__layout__menu__contenido__modulo__link__texto-titulo">Modulos</p>
+                        </div>
+
+                        <ul class="dashboard__layout__menu__contenido__modulo__link__items">
+                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item">
+                                
+                                <!-- Verificacion De Datos -->
+                                {% url 'cargos' as cargos_url %}
+                                {% url 'empleados' as empleados_url %}
+
+                                {% if request.path == cargos_url or request.path == empleados_ur %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-people"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Empleados</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'cargos' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Cargos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'empleados' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Empleados</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-people"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Empleados</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'cargos' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Cargos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'empleados' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Empleados</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% endif %}
+
+
+
+
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'tipo_permisos' as tipo_permisos_url %}
+                                {% url 'permisos' as permisos_url %}
+
+                                {% if request.path == tipo_permisos_url or  request.path == permisos_url %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-journal-bookmark"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Permisos</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'tipo_permisos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Tipo De Permisos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Permisos</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-journal-bookmark"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Permisos</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'tipo_permisos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Tipo De Permisos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Permisos</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% endif %}
+
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'vacantes_disponibles' as vacantes_disponibles_url %}
+                                {% url 'candidatos' as candidatos_url %}
+                                {% url 'referidos' as referidos_url %}
+                                
+                                {% if request.path == vacantes_disponibles_url or request.path == candidatos_url or request.path == referidos_url %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-node-plus"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Reclutamiento</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'vacantes_disponibles'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Vacantes Disponibles</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'candidatos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Candidatos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'referidos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Referidos</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-node-plus"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Reclutamiento</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'vacantes_disponibles'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Vacantes Disponibles</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'candidatos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Candidatos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'referidos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Referidos</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% endif %}
+
+
+
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'historico_empleados' as historico_empleados_url %}
+                                {% url 'historico_candidatos' as historico_candidatos_url %}
+
+                                {% if request.path == historico_empleados_url or request.path == historico_candidatos_url %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-database"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Historicos</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'historico_empleados' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Histo. Empleados</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'historico_candidatos' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Histo. Candidatos</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-database"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Historicos</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'historico_empleados' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Histo. Empleados</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'historico_candidatos' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Histo. Candidatos</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% endif %}
+
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'planilla_mensuales' as planilla_mensuales_url %}
+                                {% url 'planilla_quincenales' as planilla_quincenales_url %}
+                                {% url 'planilla_semanales' as planilla_semanales_url %}
+                                {% url 'planilla_eventuales' as planilla_eventuales_url %}
+
+                                {% if request.path == planilla_mensuales_url or request.path == planilla_quincenales_url or request.path == planilla_semanales_url or request.path == planilla_eventuales_url %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-list-ol"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Planillas</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_mensuales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Mensuales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_quincenales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Quincenales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_semanales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Semanales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_eventuales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Eventuales</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event ">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-list-ol"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Planillas</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_mensuales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Mensuales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_quincenales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Quincenales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_semanales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Semanales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'planilla_eventuales' %}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Eventuales</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+
+                    </article>
+
+                    <article class="dashboard__layout__menu__contenido__modulo__link">
+                        <div class="dashboard__layout__menu__contenido__modulo__link__texto">
+                            <p class="dashboard__layout__menu__contenido__modulo__link__texto-titulo">Parametros</p>
+                        </div>
+
+                        <ul class="dashboard__layout__menu__contenido__modulo__link__items">
+                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item">
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'retenciones_renta' as retenciones_renta_url %}
+                                {% url 'retenciones_ley' as retenciones_ley_url %}
+
+                                {% if request.path == retenciones_renta_url or request.path == retenciones_ley_url %}
+
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-journal-bookmark"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Retenciones</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'retenciones_ley'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Retenciones Ley</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'retenciones_renta'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Retenciones Renta</p>
+                                                </a>
+                                            </li>
+                                            
+                                        </ul>
+                                    </a>
+
+                                {% else %}
+
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event ">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-journal-bookmark"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Retenciones</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'retenciones_ley'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Retenciones Ley</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'retenciones_renta'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Retenciones Renta</p>
+                                                </a>
+                                            </li>
+                                            
+                                        </ul>
+                                    </a>
+
+                                {% endif %}
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'permisos_medicos' as permisos_medicos_url %}
+                                {% url 'permisos_personales' as permisos_personales_url %}
+                                {% url 'vacaciones' as vacaciones_url %}
+                                
+                                {% if request.path == permisos_medicos_url or request.path == permisos_personales_url  or request.path == vacaciones_url %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-command"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Emple. Permisos</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos_medicos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Permisos Medicos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos_personales'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Permisos Personales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'vacaciones'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Vacaciones</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event ">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-command"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Emple. Permisos</div>
+                                        </div>
+
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+
+                                        <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos_medicos'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Permisos Medicos</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'permisos_personales'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Permisos Personales</p>
+                                                </a>
+                                            </li>
+                                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
+                                                <a href="{% url 'vacaciones'%}">
+                                                    <i class="bi bi-chevron-compact-right"></i>
+                                                    <p>Vacaciones</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </a>
+                                {% endif %}
+
+                                <!-- Verificacion De Datos -->
+                                {% url 'empresa' as empresa_url %}
+                                {% if request.path == empresa_url %}
+                                    <a href="{% url 'empresa'%}" class="dashboard__layout__menu__contenido__modulo__link__items__item__link active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-layers"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Empresa</div>
+                                        </div>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'empresa'%}" class="dashboard__layout__menu__contenido__modulo__link__items__item__link ">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-layers"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Empresa</div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+
+                    </article>
+
+                    <article class="dashboard__layout__menu__contenido__modulo__link">
+                        <div class="dashboard__layout__menu__contenido__modulo__link__texto">
+                            <p class="dashboard__layout__menu__contenido__modulo__link__texto-titulo">Sistema</p>
+                        </div>
+
+                        <ul class="dashboard__layout__menu__contenido__modulo__link__items">
+                            <li class="dashboard__layout__menu__contenido__modulo__link__items__item">
+                                <!-- Verificacion De Datos -->
+                                {% url 'ajustes_generales' as ajustes_generales_url %}
+                                {% if request.path == ajustes_generales_url %}
+                                    <a href="{% url 'ajustes_generales'%}" class="dashboard__layout__menu__contenido__modulo__link__items__item__link active">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor active">
+                                            <i class="bi bi-app-indicator"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Ajustes Generales</div>
+                                        </div>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'ajustes_generales'%}" class="dashboard__layout__menu__contenido__modulo__link__items__item__link">
+                                        <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
+                                            <i class="bi bi-app-indicator"></i>
+                                            <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link-texto">Ajustes Generales</div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+
+                    </article>
+
+                </div>
+
+            </main>
+        </aside>
+
+        <section class="dashboard__layout__contenido content">
+            <header class="dashboard__layout__contenido__header">
+                <div class="dashboard__layout__contenido__header__welcome">
+                    <h2 class="dashboard__layout__contenido__header__welcome-title">Hello, Ricardo Vega 👋</h2>
+                    <p class="dashboard__layout__contenido__header__welcome-subtitle">Welcome to the Hospital Management </p>
+                </div>
+
+                <div class="dashboard__layout__contenido__header__search">
+                    <form method="get" class="dashboard__layout__contenido__header__search__form">
+                        <label for="" class="dashboard__layout__contenido__header__search__form-label"><i class="bi bi-search"></i></label>
+                        <div class="dashboard__layout__contenido__header__search__form__input">
+                            <input class="dashboard__layout__contenido__header__search__form__input-text" type="search" name="" id="" placeholder="Search anything">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="dashboard__layout__contenido__header__more">
+                    <ul class="dashboard__layout__contenido__header__more__list">
+                        <li class="dashboard__layout__contenido__header__more__list__item">
+                            <a href="#" class="dashboard__layout__contenido__header__more__list__item-link">
+                                <i class="bi bi-chat-dots"></i>
+                            </a>
+                        </li>
+                        <li class="dashboard__layout__contenido__header__more__list__item">
+                            <a href="#" class="dashboard__layout__contenido__header__more__list__item-link">
+                                <i class="bi bi-bell"></i>
+                            </a>
+                        </li>
+                        <li class="dashboard__layout__contenido__header__more__list__item dashboard__layout__contenido__header__more__list__item-user ">
+                            <div class="dashboard__layout__contenido__header__more__list__item__user-click">
+                                <div class="dashboard__layout__contenido__header__more__list__item__user">
+                                    <div class="dashboard__layout__contenido__header__more__list__item__user__imagen">
+                                        <img class="dashboard__layout__contenido__header__more__list__item__user__imagen-photo" src="{% static 'build/img/doctor3.webp'%}" alt="user photo">
+                                    </div>
+
+                                    <div class="dashboard__layout__contenido__header__more__list__item__user__description">
+                                        <h3 class="dashboard__layout__contenido__header__more__list__item__user__description-name">John Warker</h3>
+                                        <p class="dashboard__layout__contenido__header__more__list__item__user__description-role">Admin</p>
+                                    </div>
+                                </div>
+
+                                <a href="#" class="dashboard__layout__contenido__header__more__list__item__setting">
+                                    <i class="bi bi-chevron-down"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+
+            <div class="dashboard__layout__contenido__body">
+                {% block content%}
+
+
+                {% endblock %}
+            </div>
+
+            <footer class="dashboard__layout__contenido__footer">
+                <div class="dashboard__layout__contenido__footer__left">
+                    <p>© 2025 AXIOSRH - nextvegasolutions@gmail.com</p>
+                </div>
+
+                <div class="dashboard__layout__contenido__footer__right">
+                    <p> Sistema Gestion de Recursos Humanos - V 1.0</p>
+                </div>
+            </footer>
+
+        </section>
+    </div>
+
+
+    <script>
+        document.querySelectorAll('.dashboard__layout__menu__contenido__modulo__link__items__item__link__event').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+        
+                // Manejar el elemento acordeón (hermano siguiente)
+                const accordion = this.nextElementSibling;
+                if (accordion && accordion.classList.contains('dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion')) {
+                    accordion.classList.toggle('active');
+                }
+        
+                // Manejar el activelist (hijo dentro del enlace)
+                const activelist = this.querySelector('.dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist');
+                if (activelist) {
+                    activelist.classList.toggle('active');
+                }
+            });
+        });
+        
+        
+    </script>
+
+    {% block scripts %}
+
+
+    {% endblock %}
+    
+</body>
+</html>

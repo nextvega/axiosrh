@@ -1,0 +1,96 @@
+{% extends 'layouts/dashboard_layout.html' %}
+{% load static %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+{% block content %}
+<main class="table__principal__datos">
+    <section class="table__principal__datos__content">
+        <div class="table__left__information">
+            <header class="table__left__information__header">
+                    <div class="table__left__information__header__title">
+                            <h3 class="table__left__information__header__title-text">{{title}} | Listado</h3>
+                    </div>
+    
+                    <div class="table__left__information__header__link">
+                            <a class="table__left__information__header__link-click" href="#">+ {{title}}</a>
+                    </div>
+            </header>
+    
+            <div class="table__left__information__help">
+                    <form method="get" class="table__left__information__help__form">
+                            <label for="" class="table__left__information__help__form-label"><i class="bi bi-search"></i></label>
+                            <div class="table__left__information__help__form__input">
+                                    <input class="table__left__information__help__form__input-text" type="search" name="" id="" placeholder="Search patients name, id">
+                            </div>
+                    </form>
+    
+                    <div class="table__left__information__help__button">
+                        <a href="" class="table__left__information__help__button__link">
+                            <i class="bi bi-sliders"></i>
+                            <p class="table__left__information__help__button__link-text">Advance Filter</p>
+                        </a>
+                    </div>
+
+            </div>
+
+            <table class="table__left__information__table">
+                    <thead>
+                            <tr>
+                            <th class="sortable">ID</th>
+                            <th class="sortable">Name</th>
+                            <th class="sortable">Admit</th>
+                            <th class="sortable">Type</th>
+                            <th class="sortable">Status</th>
+                            <th class="sortable">Details</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                    <td>#40322</td>
+                                    <td>Kathryn Murphy</td>
+                                    <td>9/4/12</td>
+                                    <td>Diabetes</td>
+                                    <td class="status discharge">Discharge</td>
+                                    <td><a href="#" class="details">Details</a></td>
+                            </tr>
+                            <tr>
+                                    <td>#40322</td>
+                                    <td>Esther Howard</td>
+                                    <td>4/4/18</td>
+                                    <td>Hypertension</td>
+                                    <td class="status transfer">Transfers</td>
+                                    <td><a href="#" class="details">Details</a></td>
+                            </tr>
+                            <tr>
+                                    <td>#40322</td>
+                                    <td>Kathryn Murphy</td>
+                                    <td>9/4/12</td>
+                                    <td>Diabetes</td>
+                                    <td class="status discharge">Discharge</td>
+                                    <td><a href="#" class="details">Details</a></td>
+                            </tr>
+                            <tr>
+                                    <td>#40322</td>
+                                    <td>Esther Howard</td>
+                                    <td>4/4/18</td>
+                                    <td>Hypertension</td>
+                                    <td class="status transfer">Transfers</td>
+                                    <td><a href="#" class="details">Details</a></td>
+                            </tr>
+                    </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+
+
+
+{% endblock %}

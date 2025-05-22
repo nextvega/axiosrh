@@ -1,0 +1,203 @@
+{% extends 'layouts/dashboard_layout.html' %}
+{% load static %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+{% block content %}
+
+{% if messages %}
+        {%for message in messages %}
+                {%if "create" in message.tags %}
+                    <script>
+                            Swal.fire({
+                                    title: "Registro Creado",
+                                    text: "{{message}}",
+                                    icon: "success"
+                            });
+                    </script>
+                {%endif%}
+                {%if "update" in message.tags %}
+                    <script>
+                            Swal.fire({
+                                    title: "Registro Actualizado",
+                                    text: "{{message}}",
+                                    icon: "success"
+                            });
+                    </script>
+                {%endif%}
+
+                {%if "delete" in message.tags %}
+                    <script>
+                            Swal.fire({
+                                title: "Registro Eliminado",
+                                text: "{{message}}",
+                                icon: "success"
+                            });
+                    </script>
+                {%endif%}
+        {% endfor %}
+{% endif %}
+
+
+<main class="table__principal__datos">
+    <section class="table__principal__datos__content">
+        <div class="table__left__information">
+            <header class="table__left__information__header">
+                    <div class="table__left__information__header__title">
+                            <h3 class="table__left__information__header__title-text">{{title}} | Listado</h3>
+                    </div>
+    
+                    <div class="table__left__information__header__link">
+                            <a class="table__left__information__header__link-click" href="{% url 'nuevo_permiso'%}">+ Agregar {{title}}</a>
+                    </div>
+            </header>
+    
+            <div class="table__left__information__help">
+                <form method="get" class="table__left__information__help__form">
+                        <label for="search" class="table__left__information__help__form-label"><i class="bi bi-search"></i></label>
+                        <div class="table__left__information__help__form__input">
+                                <input
+                                class="table__left__information__help__form__input-text"
+                                type="search"
+                                name="buscador"
+                                id="search"
+                                placeholder="Buscar por nombre de permiso"
+                                value="{{ request.GET.q|default:'' }}"
+                                >
+                        </div>
+                </form>
+                
+
+            </div>
+
+            <table class="table__left__information__table">
+                <thead>
+                    <tr>
+                        <th class="sortable">ID</th>
+                        <th class="sortable">Nombre</th>
+                        <th class="sortable">Estado</th>
+                        <th class="sortable sortable__acciones" style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for permiso in permisos %}
+                    <tr>
+                        <td>{{ permiso.id }}</td>
+                        <td>{{ permiso.nombre }}</td>
+                        <td class="status {% if permiso.estado == 'ACTIVO' %}discharge{% else %}transfer{% endif %}">
+                            {{ permiso.estado }}
+                        </td>
+                        <td class="table__left__information__table__acciones">
+                            <a href="{% url 'editar_permiso' permiso.id %}" class="editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            
+                            <a href="{% url 'eliminar_permiso' permiso.id %}" class="eliminar" data-id="{{ permiso.id }}">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay permisos registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+
+            <div class="pagination">
+                <ul class="pagination_list">
+            
+                    <!-- Flecha izquierda -->
+                    <li>
+                        {% if permisos.has_previous %}
+                            <a href="?page={{ permisos.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        {% else %}
+                            <span class="disabled"><i class="bi bi-chevron-left"></i></span>
+                        {% endif %}
+                    </li>
+            
+                    <!-- Página anterior (si aplica) -->
+                    {% if permisos.number > 1 %}
+                    <li>
+                        <a href="?page={{ permisos.number|add:"-1" }}{% if query %}&q={{ query }}{% endif %}">
+                            {{ permisos.number|add:"-1" }}
+                        </a>
+                    </li>
+                    {% endif %}
+            
+                    <!-- Página actual -->
+                    <li>
+                        <a href="?page={{ permisos.number }}{% if query %}&q={{ query }}{% endif %}" class="current">
+                            {{ permisos.number }}
+                        </a>
+                    </li>
+            
+                    <!-- Página siguiente (si aplica) -->
+                    {% if permisos.number < permisos.paginator.num_pages %}
+                    <li>
+                        <a href="?page={{ permisos.number|add:"1" }}{% if query %}&q={{ query }}{% endif %}">
+                            {{ permisos.number|add:"1" }}
+                        </a>
+                    </li>
+                    {% endif %}
+            
+                    <!-- Flecha derecha -->
+                    <li>
+                        {% if permisos.has_next %}
+                            <a href="?page={{ permisos.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        {% else %}
+                            <span class="disabled"><i class="bi bi-chevron-right"></i></span>
+                        {% endif %}
+                    </li>
+            
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </section>
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.eliminar').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.getAttribute('href');
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción no se puede deshacer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+});
+</script>
+
+
+{% endblock %}

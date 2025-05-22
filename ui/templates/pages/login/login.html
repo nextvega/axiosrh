@@ -1,0 +1,63 @@
+{% extends 'layouts/login_layout.html' %}
+{% load static %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+{% block content %}
+
+<main class="login__principal content">
+    <section class="login__principal__content">
+        <div class="login__principal__content__logo">
+            <a href="{% url 'index' %}" class="dashboard__layout__menu__contenido__titulo__link">
+                <i class="bi bi-alt"></i>
+                <h1 class="dashboard__layout__menu__contenido__titulo__link__texto">Axios<span>RH</span></h1>
+                
+            </a>
+
+            <p class="dashboard__layout__menu__contenido__titulo__text">Sistema De Recursos Humanos</p>
+        </div>
+
+        <div class="login__principal__content__principal">
+            <form action="" class="login__principal__content__principal__form">
+                <div class="login__principal__content__principal__form__items">
+                    <label class="login__principal__content__principal__form__items-label" for="">Email:</label>
+                    <input class="login__principal__content__principal__form__items-email" type="email" placeholder="EMAIL:">
+                </div>
+
+                <div class="login__principal__content__principal__form__items">
+                    <label class="login__principal__content__principal__form__items-label" for="">Password:</label>
+                    <input class="login__principal__content__principal__form__items-password" type="password" placeholder="PASSWORD:">
+                </div>
+
+                <div class="login__principal__content__principal__form__submit">
+                    <input class="login__principal__content__principal__form__submit-button" type="submit" value="Iniciar Sesion">
+
+                </div>
+
+            </form>
+        </div>
+
+        <div class="login__principal__content__lost">
+            <a class="login__principal__content__lost-link" href="">FORGOT YOUR PASSWORD?</a>
+        </div>
+    </section>
+
+    <section class="content login__principal__image">
+        <div class="login__principal__image__photo">
+            <img src="{% static 'build/img/tree.webp'%}" alt="">
+            <img src="{% static 'build/img/tree-2.webp'%}" alt="">
+        </div>
+    </section>
+</main>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+
+
+{% endblock %}
