@@ -71,8 +71,8 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Telefono</th>
-                        <th>Departamento</th>
-                        <th>Municipio</th>
+                        <th>Fecha de ingreso</th>
+                        <th>DUI</th>
                         <th>Cargo</th>
                         <th>Tipo Pago</th>
                         <th>Estado</th>
@@ -85,8 +85,8 @@
                             <td>{{ empleado.id }}</td>
                             <td>{{ empleado.nombre }}</td>
                             <td>{{ empleado.telefono }}</td>
-                            <td>{{ empleado.departamento }}</td>
-                            <td>{{ empleado.municipio }}</td>
+                            <td>{{ empleado.fecha_ingreso }}</td>
+                            <td>{{ empleado.dui }}</td>
                             <td>{{ empleado.tipo_cargo.nombre }}</td>
                             <td>{{ empleado.tipo_pago }}</td>
                             <td class="status {% if empleado.estado == 'ACTIVO' %}discharge{% else %}transfer{% endif %}">

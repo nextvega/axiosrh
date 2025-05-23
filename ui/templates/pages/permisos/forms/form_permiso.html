@@ -1,86 +1,97 @@
 {% extends 'layouts/dashboard_layout.html' %}
 {% load static %}
 
-
-{% block title %} {{title}} {% endblock %}
-
-
+{% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-
-
 {% if messages %}
-        {%for message in messages %}
-                {%if "error" in message.tags %}
-                    <script>
-                            Swal.fire({
-                                title: "Se produjo un error",
-                                text: "{{message}}",
-                                icon: "error"
-                            });
-                    </script>
-                {%endif%}
-        {% endfor %}
+    {% for message in messages %}
+        {% if "error" in message.tags %}
+            <script>
+                Swal.fire({
+                    title: "Se produjo un error",
+                    text: "{{ message }}",
+                    icon: "error"
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
 {% endif %}
 
 <main class="table__principal__datos table__principal__datos__form">
     <section class="table__principal__datos__content">
         <div class="table__left__information">
             <header class="table__left__information__header">
-                    <div class="table__left__information__header__title">
-                            <h3 class="table__left__information__header__title-text">{{title}} | Nuevo</h3>
-                    </div>
-    
-                    <div class="table__left__information__header__link">
-                        <a class="table__left__information__header__link-click table__left__information__header__link-click-danger" href="{% url 'permisos_admin'%}">
-                            <i class="bi bi-x-lg"></i> Cancelar</a>
-                        <a href="#" id="submitNuevoPermiso" class="table__left__information__header__link-click">
-                            <i class="bi bi-floppy2-fill"></i> Guardar
-                        </a>
-                        
-                    </div>
+                <div class="table__left__information__header__title">
+                    <h3 class="table__left__information__header__title-text">{{ title }} | Nuevo</h3>
+                </div>
+
+                <div class="table__left__information__header__link">
+                    <a class="table__left__information__header__link-click table__left__information__header__link-click-danger" href="{% url 'permisos' %}">
+                        <i class="bi bi-x-lg"></i> Cancelar
+                    </a>
+                    <a href="#" id="submitPermiso" class="table__left__information__header__link-click">
+                        <i class="bi bi-floppy2-fill"></i> Guardar
+                    </a>
+                </div>
             </header>
         </div>
     </section>
-    
+
     <section class="table__principal__datos__content table__principal__datos__content__from">
         <div class="table__left__information">
-
-            <form method="POST" id="formNuevoPermiso" class="table__left__information__form__new">
+            <form method="POST" id="formPermiso" class="table__left__information__form__new table__left__information__form__new-grid">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
-            
+
                 <div class="table__left__information__form__new__block">
-                    <label class="table__left__information__form__new__block-label">Nombre:</label>
-                    {{ form.nombre }}
-                    {{ form.nombre.errors }}
+                    <label class="table__left__information__form__new__block-label">Empleado:</label>
+                    {{ form.empleado }}
+                    {{ form.empleado.errors }}
                 </div>
-            
+
                 <div class="table__left__information__form__new__block">
-                    <label class="table__left__information__form__new__block-label">Estado:</label>
-                    {{ form.estado }}
-                    {{ form.estado.errors }}
+                    <label class="table__left__information__form__new__block-label">Fecha Inicio:</label>
+                    {{ form.fecha_inicio }}
+                    {{ form.fecha_inicio.errors }}
                 </div>
-            
+
+
+
+                <div class="table__left__information__form__new__block">
+                    <label class="table__left__information__form__new__block-label">Tipo de Permiso:</label>
+                    {{ form.tipo_permiso }}
+                    {{ form.tipo_permiso.errors }}
+                </div>
+
+                <div class="table__left__information__form__new__block">
+                    <label class="table__left__information__form__new__block-label">Fecha Fin:</label>
+                    {{ form.fecha_fin }}
+                    {{ form.fecha_fin.errors }}
+                </div>
+
+                <div class="table__left__information__form__new__block">
+                    <label class="table__left__information__form__new__block-label">Remuneración:</label>
+                    {{ form.remuneracion }}
+                    {{ form.remuneracion.errors }}
+                </div>
+
                 <div class="table__left__information__form__new__block">
                     <label class="table__left__information__form__new__block-label">Comentarios:</label>
                     {{ form.comentarios }}
                     {{ form.comentarios.errors }}
                 </div>
             </form>
-                    
         </div>
     </section>
 </main>
-
 {% endblock %}
 
 {% block scripts %}
 <script>
-    document.getElementById('submitNuevoPermiso').addEventListener('click', function (event) {
+    document.getElementById('submitPermiso').addEventListener('click', function (event) {
         event.preventDefault(); // Evita que el enlace navegue
-        document.getElementById('formNuevoPermiso').submit(); // Envía el formulario
+        document.getElementById('formPermiso').submit(); // Envía el formulario
     });
 </script>
-
 {% endblock %}

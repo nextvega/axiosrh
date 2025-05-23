@@ -36,8 +36,8 @@ class Permiso(models.Model):
     comentarios = models.TextField(blank=True, null=True)
 
     class Meta:
-        verbose_name = "Permiso"
-        verbose_name_plural = "Permisos"
+        verbose_name = "Admin Permiso"
+        verbose_name_plural = "Admin Permisos"
 
     def __str__(self):
         return self.nombre
@@ -146,3 +146,39 @@ class Empleado(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class TipoPermiso(models.Model):
+    ESTADO_CHOICES = [
+        ('ACTIVO', 'Activo'),
+        ('INACTIVO', 'Inactivo'),
+    ]
+
+    nombre = models.CharField(max_length=100)
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES)
+
+    class Meta:
+        verbose_name = "Tipo de Permiso"
+        verbose_name_plural = "Tipos de Permiso"
+
+    def __str__(self):
+        return self.nombre
+    
+class Permisos(models.Model):
+    REMUNERACION_CHOICES = [
+        ('SI', 'Sí'),
+        ('NO', 'No'),
+    ]
+
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='permisos')
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    tipo_permiso = models.ForeignKey(TipoPermiso, on_delete=models.CASCADE, related_name='permisos')
+    remuneracion = models.CharField(max_length=2, choices=REMUNERACION_CHOICES)
+    comentarios = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Permisos"
+        verbose_name_plural = "Permisos"
+
+    def __str__(self):
+        return f"{self.empleado} - {self.tipo_permiso} ({self.fecha_inicio} a {self.fecha_fin})"

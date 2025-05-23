@@ -33,8 +33,18 @@ urlpatterns = [
     path("administracion/usuarios/eliminar_usuario/<int:pk>/", views.eliminar_usuario, name="eliminar_usuario"),
 
     # Modulos -> Permisos
-    path("permisos/tipo_permisos", views.tipo_permisos, name="tipo_permisos"),
+
+    # tipo permisos
+    path("permisos/empleado_tipo_permisos", views.empleado_tipo_permisos, name="empleado_tipo_permisos"),
+    path("permisos/empleado_tipo_permisos/empleado_nuevo_tipo_permiso", views.empleado_nuevo_tipo_permiso, name="empleado_nuevo_tipo_permiso"),
+    path("permisos/empleado_tipo_permisos/empleado_editar_tipo_permiso/<int:pk>/", views.empleado_editar_tipo_permiso, name="empleado_editar_tipo_permiso"),
+    path("permisos/empleado_tipo_permisos/empleado_eliminar_tipo_permiso/<int:pk>/", views.empleado_eliminar_tipo_permiso, name="empleado_eliminar_tipo_permiso"),
+
+    # permisos
     path("permisos/permisos", views.permisos, name="permisos"),
+    path("permisos/permisos/nuevo_permisos", views.nuevo_permisos, name="nuevo_permisos"),
+    path("permisos/permisos/editar_permisos/<int:pk>/", views.editar_permisos, name="editar_permisos"),
+    path("permisos/permisos/eliminar_permisos/<int:pk>/", views.eliminar_permisos, name="eliminar_permisos"),
 
     # Modulos -> Reclutamiento
     path("reclutamiento/vacantes_disponibles", views.vacantes_disponibles, name="vacantes_disponibles"),

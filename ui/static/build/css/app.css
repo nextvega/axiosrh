@@ -1678,7 +1678,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
 .table__principal__datos__form .table__principal__datos__content__from .table__left__information .table__left__information__form__new .table__left__information__form__new__block {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
 }
 .table__principal__datos__form .table__principal__datos__content__from .table__left__information .table__left__information__form__new .table__left__information__form__new__block .table__left__information__form__new__block-label {
   display: inline-block;

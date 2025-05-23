@@ -156,7 +156,7 @@
                                 {% url 'cargos' as cargos_url %}
                                 {% url 'empleados' as empleados_url %}
 
-                                {% if request.path == cargos_url or request.path == empleados_ur %}
+                                {% if request.path == cargos_url or request.path == empleados_url %}
                                     <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
                                         <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
                                             <i class="bi bi-people"></i>
@@ -215,10 +215,10 @@
 
 
                                 <!-- Verificacion De Datos -->
-                                {% url 'tipo_permisos' as tipo_permisos_url %}
+                                {% url 'empleado_tipo_permisos' as empleado_tipo_permisos_url %}
                                 {% url 'permisos' as permisos_url %}
 
-                                {% if request.path == tipo_permisos_url or  request.path == permisos_url %}
+                                {% if request.path == empleado_tipo_permisos_url or  request.path == permisos_url %}
                                     <a href="#" class="dashboard__layout__menu__contenido__modulo__link__items__item__link dashboard__layout__menu__contenido__modulo__link__items__item__link__event active">
                                         <div class="dashboard__layout__menu__contenido__modulo__link__items__item__link__contenedor">
                                             <i class="bi bi-journal-bookmark"></i>
@@ -231,7 +231,7 @@
 
                                         <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
                                             <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
-                                                <a href="{% url 'tipo_permisos'%}">
+                                                <a href="{% url 'empleado_tipo_permisos'%}">
                                                     <i class="bi bi-chevron-compact-right"></i>
                                                     <p>Tipo De Permisos</p>
                                                 </a>
@@ -257,7 +257,7 @@
 
                                         <ul class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion">
                                             <li class="dashboard__layout__menu__contenido__modulo__link__items__item__link__activelist_accordion__item">
-                                                <a href="{% url 'tipo_permisos'%}">
+                                                <a href="{% url 'empleado_tipo_permisos'%}">
                                                     <i class="bi bi-chevron-compact-right"></i>
                                                     <p>Tipo De Permisos</p>
                                                 </a>

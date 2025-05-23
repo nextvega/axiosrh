@@ -5,9 +5,9 @@ from django.http import JsonResponse
 from django.urls import reverse
 from django.conf import settings
 from django.contrib import messages
-from .models import Rol, Permiso, AsignarPermiso, Usuario, Cargo, Empleado
+from .models import Rol, Permiso, AsignarPermiso, Usuario, Cargo, Empleado, Permisos
 from django.core.paginator import Paginator
-from .forms import RolForm, PermisoForm, AsignarPermisoForm, UsuarioForm, CargoForm, EmpleadoForm
+from .forms import RolForm, PermisoForm, AsignarPermisoForm, UsuarioForm, CargoForm, EmpleadoForm, TipoPermiso, TipoPermisoForm, PermisosForm
 from django.db.models import Q
 # Login
 
@@ -395,16 +395,126 @@ def eliminar_empleado(request, pk):
 
 # Modulos -> Permisos 
 
-def tipo_permisos(request):
-    return render(request, 'pages/permisos/tipo_de_permisos.html',{
-        'title': 'Tipo de Permisos',
+# tipo de permisos
+def empleado_tipo_permisos(request):
+    query = request.GET.get('buscador', '').strip()
+    tipo_permisos_list = TipoPermiso.objects.all()
+
+    if query:
+        tipo_permisos_list = tipo_permisos_list.filter(nombre__icontains=query)
+
+    tipo_permisos_list = tipo_permisos_list.order_by('-id')
+
+    paginator = Paginator(tipo_permisos_list, 10)
+    page_number = request.GET.get('page')
+    tipo_permisos = paginator.get_page(page_number)
+
+    return render(request, 'pages/permisos/tipo_permisos.html', {
+        'title': 'Tipos de Permisos',
+        'tipo_permisos': tipo_permisos,
+        'query': query,
     })
 
+def empleado_nuevo_tipo_permiso(request):
+    if request.method == 'POST':
+        form = TipoPermisoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tipo de permiso creado exitosamente.', extra_tags='create')
+            return redirect('empleado_tipo_permisos')
+    else:
+        form = TipoPermisoForm()
+
+    return render(request, 'pages/permisos/forms/form_tipo_permiso.html', {
+        'form': form,
+        'title': 'Nuevo Tipo de Permiso',
+    })
+
+def empleado_editar_tipo_permiso(request, pk):
+    tipo_permiso = get_object_or_404(TipoPermiso, pk=pk)
+
+    if request.method == 'POST':
+        form = TipoPermisoForm(request.POST, instance=tipo_permiso)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tipo de permiso actualizado exitosamente.', extra_tags='update')
+            return redirect('empleado_tipo_permisos')
+    else:
+        form = TipoPermisoForm(instance=tipo_permiso)
+
+    return render(request, 'pages/permisos/forms/form_tipo_permiso.html', {
+        'form': form,
+        'title': 'Editar Tipo de Permiso',
+    })
+
+def empleado_eliminar_tipo_permiso(request, pk):
+    tipo_permiso = get_object_or_404(TipoPermiso, pk=pk)
+    tipo_permiso.delete()
+    messages.success(request, 'Tipo de permiso eliminado exitosamente.', extra_tags='delete')
+    return redirect('empleado_tipo_permisos')
+
+# permisos
 def permisos(request):
-    return render(request, 'pages/permisos/permisos.html',{
+    query = request.GET.get('buscador', '').strip()
+    permisos_list = Permisos.objects.select_related('empleado', 'tipo_permiso').all()
+
+    if query:
+        # Filtramos por nombre del empleado o nombre del tipo permiso (puedes ajustar según necesites)
+        permisos_list = permisos_list.filter(
+            empleado__nombre__icontains=query
+        ) | permisos_list.filter(
+            tipo_permiso__nombre__icontains=query
+        )
+
+    permisos_list = permisos_list.order_by('-id')
+
+    paginator = Paginator(permisos_list, 10)
+    page_number = request.GET.get('page')
+    permisos = paginator.get_page(page_number)
+
+    return render(request, 'pages/permisos/permisos.html', {
         'title': 'Permisos',
+        'permisos': permisos,
+        'query': query,
     })
 
+def nuevo_permisos(request):
+    if request.method == 'POST':
+        form = PermisosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Permiso creado exitosamente.', extra_tags='create')
+            return redirect('permisos')  # Cambia 'permisos' por el nombre correcto de la url que lista permisos
+    else:
+        form = PermisosForm()
+
+    return render(request, 'pages/permisos/forms/form_permiso.html', {
+        'form': form,
+        'title': 'Nuevo Permiso',
+    })
+
+def editar_permisos(request, pk):
+    permiso = get_object_or_404(Permisos, pk=pk)
+
+    if request.method == 'POST':
+        form = PermisosForm(request.POST, instance=permiso)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Permiso actualizado exitosamente.', extra_tags='update')
+            return redirect('permisos')  # Cambia por la url donde listan los permisos
+    else:
+        form = PermisosForm(instance=permiso)
+
+    return render(request, 'pages/permisos/forms/form_permiso.html', {
+        'form': form,
+        'title': 'Editar Permiso',
+    })
+
+def eliminar_permisos(request, pk):
+    permiso = get_object_or_404(Permisos, pk=pk)
+    permiso.delete()
+    messages.success(request, 'Permiso eliminado exitosamente.', extra_tags='delete')
+    return redirect('permisos') 
 
 # Modulos -> Reclutamiento 
 

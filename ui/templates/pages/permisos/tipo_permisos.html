@@ -4,7 +4,6 @@
 {% block title %} {{title}} {% endblock %}
 
 {% block content %}
-
 {% if messages %}
     {% for message in messages %}
         {% if "create" in message.tags %}
@@ -45,7 +44,7 @@
                     <h3 class="table__left__information__header__title-text">{{title}} | Listado</h3>
                 </div>
                 <div class="table__left__information__header__link">
-                    <a class="table__left__information__header__link-click" href="{% url 'nuevo_permisos' %}">+ Agregar {{title}}</a>
+                    <a class="table__left__information__header__link-click" href="{% url 'empleado_nuevo_tipo_permiso' %}">+ Agregar {{title}}</a>
                 </div>
             </header>
 
@@ -58,8 +57,8 @@
                             type="search"
                             name="buscador"
                             id="search"
-                            placeholder="Buscar por empleado o tipo de permiso"
-                            value="{{ request.GET.buscador|default:'' }}"
+                            placeholder="Buscar por nombre de permiso"
+                            value="{{ request.GET.q|default:'' }}"
                         >
                     </div>
                 </form>
@@ -69,35 +68,31 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Empleado</th>
-                        <th>Tipo Permiso</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                        <th>Remuneración</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
                         <th class="sortable sortable__acciones" style="text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for permiso in permisos %}
+                    {% for tipo in tipo_permisos %}
                         <tr>
-                            <td>{{ permiso.id }}</td>
-                            <td>{{ permiso.empleado.nombre }}</td>
-                            <td>{{ permiso.tipo_permiso.nombre }}</td>
-                            <td>{{ permiso.fecha_inicio }}</td>
-                            <td>{{ permiso.fecha_fin }}</td>
-                            <td>{{ permiso.get_remuneracion_display }}</td>
+                            <td>{{ tipo.id }}</td>
+                            <td>{{ tipo.nombre }}</td>
+                            <td class="status {% if tipo.estado == 'ACTIVO' %}discharge{% else %}transfer{% endif %}">
+                                {{ tipo.estado }}
+                            </td>
                             <td class="table__left__information__table__acciones">
-                                <a href="{% url 'editar_permisos' permiso.id %}" class="editar">
+                                <a href="{% url 'empleado_editar_tipo_permiso' tipo.id %}" class="editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a href="{% url 'eliminar_permisos' permiso.id %}" class="eliminar" data-id="{{ permiso.id }}">
+                                <a href="{% url 'empleado_eliminar_tipo_permiso' tipo.id %}" class="eliminar" data-id="{{ tipo.id }}">
                                     <i class="bi bi-trash-fill"></i>
                                 </a>
                             </td>
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="8">No hay permisos registrados.</td>
+                            <td colspan="4">No hay tipos de permiso registrados.</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -106,36 +101,36 @@
             <div class="pagination">
                 <ul class="pagination_list">
                     <li>
-                        {% if permisos.has_previous %}
-                            <a href="?page={{ permisos.previous_page_number }}{% if query %}&buscador={{ query }}{% endif %}">
+                        {% if tipo_permisos.has_previous %}
+                            <a href="?page={{ tipo_permisos.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
                                 <i class="bi bi-chevron-left"></i>
                             </a>
                         {% else %}
                             <span class="disabled"><i class="bi bi-chevron-left"></i></span>
                         {% endif %}
                     </li>
-                    {% if permisos.number > 1 %}
+                    {% if tipo_permisos.number > 1 %}
                     <li>
-                        <a href="?page={{ permisos.number|add:"-1" }}{% if query %}&buscador={{ query }}{% endif %}">
-                            {{ permisos.number|add:"-1" }}
+                        <a href="?page={{ tipo_permisos.number|add:"-1" }}{% if query %}&q={{ query }}{% endif %}">
+                            {{ tipo_permisos.number|add:"-1" }}
                         </a>
                     </li>
                     {% endif %}
                     <li>
-                        <a href="?page={{ permisos.number }}{% if query %}&buscador={{ query }}{% endif %}" class="current">
-                            {{ permisos.number }}
+                        <a href="?page={{ tipo_permisos.number }}{% if query %}&q={{ query }}{% endif %}" class="current">
+                            {{ tipo_permisos.number }}
                         </a>
                     </li>
-                    {% if permisos.number < permisos.paginator.num_pages %}
+                    {% if tipo_permisos.number < tipo_permisos.paginator.num_pages %}
                     <li>
-                        <a href="?page={{ permisos.number|add:"1" }}{% if query %}&buscador={{ query }}{% endif %}">
-                            {{ permisos.number|add:"1" }}
+                        <a href="?page={{ tipo_permisos.number|add:"1" }}{% if query %}&q={{ query }}{% endif %}">
+                            {{ tipo_permisos.number|add:"1" }}
                         </a>
                     </li>
                     {% endif %}
                     <li>
-                        {% if permisos.has_next %}
-                            <a href="?page={{ permisos.next_page_number }}{% if query %}&buscador={{ query }}{% endif %}">
+                        {% if tipo_permisos.has_next %}
+                            <a href="?page={{ tipo_permisos.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
                                 <i class="bi bi-chevron-right"></i>
                             </a>
                         {% else %}

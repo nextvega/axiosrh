@@ -1,5 +1,5 @@
 from django import forms
-from .models import Rol, Permiso, AsignarPermiso, Usuario, Cargo, Empleado
+from .models import Rol, Permiso, AsignarPermiso, Usuario, Cargo, Empleado, TipoPermiso, Permisos
 from django.contrib.auth.hashers import make_password
 from django.forms import DateInput
 
@@ -464,7 +464,7 @@ class UsuarioForm(forms.ModelForm):
             return make_password(password)
         return self.instance.contraseña
 
-# Modulos -> Permisos 
+# Modulos -> Empleados 
 
 class CargoForm(forms.ModelForm):
     comentarios = forms.CharField(
@@ -555,3 +555,62 @@ class EmpleadoForm(forms.ModelForm):
         # Añadir clase extra a los textarea
         for field_name in ['domicilio', 'comentarios']:
             add_css_class(field_name, 'table__left__information__form__new__block-textarea-small')
+
+# Modulos -> Permisos 
+
+class TipoPermisoForm(forms.ModelForm):
+    class Meta:
+        model = TipoPermiso
+        fields = ['nombre', 'estado']
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'class': 'table__left__information__form__new__block-input',
+                'placeholder': 'Nombre del tipo de permiso',
+            }),
+            'estado': forms.Select(attrs={
+                'class': 'table__left__information__form__new__block-input',
+            }),
+        }
+
+class PermisosForm(forms.ModelForm):
+    comentarios = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'table__left__information__form__new__block-textarea table__left__information__form__new__block-textarea-small',
+            'placeholder': 'Comentarios adicionales',
+        }),
+        label='Comentarios'
+    )
+
+    remuneracion = forms.ChoiceField(
+        choices=[('SI', 'Sí'), ('NO', 'No')],
+        widget=forms.Select(attrs={
+            'class': 'table__left__information__form__new__block-input',  # misma clase que usas para selects en tus forms
+        }),
+        label='Remuneración'
+    )
+
+    class Meta:
+        model = Permisos
+        fields = ['empleado', 'fecha_inicio', 'fecha_fin', 'tipo_permiso', 'remuneracion', 'comentarios']
+        widgets = {
+            'empleado': forms.Select(attrs={
+                'class': 'table__left__information__form__new__block-input',
+            }),
+            'fecha_inicio': CustomDateInput(attrs={
+                'class': 'table__left__information__form__new__block-input',
+            }),
+            'fecha_fin': CustomDateInput(attrs={
+                'class': 'table__left__information__form__new__block-input',
+            }),
+            'tipo_permiso': forms.Select(attrs={
+                'class': 'table__left__information__form__new__block-input',
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filtrar solo empleados activos
+        self.fields['empleado'].queryset = self.fields['empleado'].queryset.filter(estado='ACTIVO')
+        # Filtrar solo tipos de permiso activos
+        self.fields['tipo_permiso'].queryset = self.fields['tipo_permiso'].queryset.filter(estado='ACTIVO')
